@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Project1 {
+public class atm {
     Scanner scanner = new Scanner(System.in);
     double balance = 0;
     int pin;
@@ -10,55 +10,49 @@ public class Project1 {
     }
 
     public void start() {
-        System.out.println("SELECT");
-        System.out.println("1: CUSTOMER");
-        System.out.println("2: ACCOUNTANT");
+        // Allow user 3 attempts to enter the correct PIN
+        int attempts = 3;
+        while (attempts > 0) {
+            System.out.println("Enter PIN:");
+            pin = scanner.nextInt();
 
-        int userType = scanner.nextInt();
-        if (userType == 1) {
-            customerOperations();
-        } else if (userType == 2) {
-            System.out.println("ACCOUNTANT FEATURES ARE UNDER DEVELOPMENT.");
-        } else {
-            System.out.println("SELECT CORRECT OPTION");
-        }
-        scanner.close(); // Close the scanner at the end
-    }
-
-    private void customerOperations() {
-        System.out.println("Enter PIN:");
-        pin = scanner.nextInt();
-
-        if (pin < 1000 || pin >= 10000) {
-            System.out.println("ERROR: WRONG PASSWORD");
-            System.out.println("TRY AGAIN");
-        } else {
-            boolean exit = false;
-            while (!exit) {
-                System.out.println("Enter the Choice:");
-                System.out.println("1: DEPOSIT");
-                System.out.println("2: WITHDRAW");
-                System.out.println("3: BALANCE");
-                System.out.println("4: EXIT");
-                int choice = scanner.nextInt();
-
-                switch (choice) {
-                    case 1:
-                        deposit();
-                        break;
-                    case 2:
-                        withdraw();
-                        break;
-                    case 3:
-                        showBalance();
-                        break;
-                    case 4:
-                        System.out.println("THANK YOU, VISIT AGAIN");
-                        exit = true;
-                        break;
-                    default:
-                        System.out.println("INVALID INPUT");
+            if (pin < 1000 || pin >= 10000) {
+                attempts--;
+                System.out.println("ERROR: WRONG PASSWORD. Remaining attempts: " + attempts);
+                if (attempts == 0) {
+                    System.out.println("ACCESS BLOCKED. PLEASE CONTACT BANK SUPPORT.");
+                    return; // Exit if attempts are exhausted
                 }
+            } else {
+                break; // Correct PIN, exit the loop
+            }
+        }
+
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("Enter the Choice:");
+            System.out.println("1: DEPOSIT");
+            System.out.println("2: WITHDRAW");
+            System.out.println("3: BALANCE");
+            System.out.println("4: EXIT");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    deposit();
+                    break;
+                case 2:
+                    withdraw();
+                    break;
+                case 3:
+                    showBalance();
+                    break;
+                case 4:
+                    System.out.println("THANK YOU, VISIT AGAIN");
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("INVALID INPUT");
             }
         }
     }
@@ -92,7 +86,7 @@ public class Project1 {
     }
 
     public static void main(String[] args) {
-        Project1 bankApp = new Project1();
+        atm bankApp = new atm();
         bankApp.start();
     }
 }
